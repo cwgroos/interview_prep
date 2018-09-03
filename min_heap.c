@@ -60,9 +60,9 @@ void printHeap(sMinHeap *heap) {
 }
 
 int removeElem(sMinHeap *heap) {
-    int min = heap->[1];
+    int min = heap->array[1];
 
-    
+    heap->array[1] = heap->array[numElements];
 
     return min;
 }
