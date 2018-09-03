@@ -59,10 +59,33 @@ void printHeap(sMinHeap *heap) {
     printf("\n");
 }
 
+#define RIGHT(idx) (2 * idx) + 1
+#define LEFT(idx) (2 * idx)
+
 int removeElem(sMinHeap *heap) {
     int min = heap->array[1];
+    int temp, tempElem;
 
-    heap->array[1] = heap->array[numElements];
+    heap->array[1] = heap->array[heap->numElements--];
+    temp = 1;
+    tempElem = heap->array[temp];
+
+    while (temp <= heap->numElements) {
+        if (LEFT(temp) <= heap->numElements && tempElem > heap->array[LEFT(temp)]) {
+            heap->array[temp] = heap->array[LEFT(temp)];
+            heap->array[LEFT(temp)] = tempElem;
+            temp = LEFT(temp);
+        }
+        else if (RIGHT(temp) <= heap->numElements && tempElem > heap->array[RIGHT(temp)]) {
+            heap->array[temp] = heap->array[RIGHT(temp)];
+            heap->array[RIGHT(temp)] = tempElem;
+            temp = RIGHT(temp);
+        }
+        else {
+            break;
+        }
+        tempElem = heap->array[temp];
+    }
 
     return min;
 }
@@ -83,10 +106,11 @@ int main(void) {
     printHeap(&heap);
     insertElem(&heap, 1);
     printHeap(&heap);
-    //int temp = remove(&heap);
-    //printf("%d\n", temp);
-    //int temp = remove(&heap);
-    //printf("%d\n", temp);
+    int temp = removeElem(&heap);
+    printf("%d\n", temp);
+    temp = removeElem(&heap);
+    printf("%d\n", temp);
+    printHeap(&heap);
 
     freeHeap(&heap);
 
